@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Словацька">
+<meta name="theme-color" content="#0e7490">
+<title>Словацька через українську</title>
+<style>
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    background:linear-gradient(160deg,#0e7490,#155e75 60%,#0c4a6e);
+    color:#fff;min-height:100vh;min-height:100dvh;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    padding:24px 18px calc(24px + env(safe-area-inset-bottom));
+    text-align:center;
+  }
+  h1{font-size:26px;margin:0 0 4px;font-weight:800;letter-spacing:.2px}
+  .sub{opacity:.85;margin:0 0 28px;font-size:15px;max-width:340px;line-height:1.4}
+  .levels{display:grid;grid-template-columns:1fr 1fr;gap:14px;width:100%;max-width:420px}
+  a.level{
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    text-decoration:none;color:#0c4a6e;background:#fff;border-radius:18px;
+    padding:22px 10px;box-shadow:0 6px 18px rgba(0,0,0,.18);
+    transition:transform .08s ease;
+  }
+  a.level:active{transform:scale(.96)}
+  a.level .lvl{font-size:30px;font-weight:800;line-height:1}
+  a.level .desc{font-size:13px;margin-top:6px;color:#155e75;font-weight:600}
+  .tip{margin-top:26px;font-size:13px;opacity:.8;max-width:360px;line-height:1.5}
+  .tip b{color:#fff}
+</style>
+</head>
+<body>
+  <h1>🇸🇰 Словацька через українську</h1>
+  <p class="sub">Вибери рівень. Прогрес зберігається на цьому пристрої окремо для кожного.</p>
+  <div class="levels">
+    <a class="level" href="slovencina-a1.html"><span class="lvl">A1</span><span class="desc">початковий</span></a>
+    <a class="level" href="slovencina-a2.html"><span class="lvl">A2</span><span class="desc">базовий</span></a>
+    <a class="level" href="slovencina-b1.html"><span class="lvl">B1</span><span class="desc">середній</span></a>
+    <a class="level" href="slovencina-b2.html"><span class="lvl">B2</span><span class="desc">вище серед.</span></a>
+  </div>
+  <p class="tip">💡 На iPhone: <b>Поділитися → На екран «Додому»</b> — буде як окремий застосунок.</p>
+</body>
+</html>
