@@ -88,7 +88,7 @@
   .text-nav button{flex:1; padding:11px; border:1px solid var(--line); cursor:pointer; background:var(--bg);
     border-radius:12px; font-family:inherit; font-size:13px; font-weight:700; color:var(--ink)}
   .data{position:fixed; bottom:0; left:0; right:0; background:var(--paper); border-top:1px solid var(--line);
-    padding:10px 16px; display:flex; gap:8px; justify-content:center; max-width:560px; margin:0 auto}
+    padding:10px 16px; display:flex; flex-wrap:wrap; gap:8px; justify-content:center; max-width:560px; margin:0 auto}
   .data button{flex:1; max-width:200px; padding:10px; border:1px solid var(--line); cursor:pointer;
     background:var(--bg); border-radius:10px; font-family:inherit; font-size:13px; font-weight:600; color:var(--ink)}
   .toast{position:fixed; bottom:62px; left:50%; transform:translateX(-50%); background:var(--ink); color:#fff;
@@ -209,6 +209,7 @@
 </div>
 <div class="data">
   <button id="help">❓ Довідка</button>
+  <button id="feedback">💬 Відгук</button>
   <button id="settings">⚙ Повторення</button>
   <button id="export">📤 Перенести</button>
   <button id="import">📥 Отримати</button>
@@ -2047,7 +2048,7 @@ function renderTexts(){
   const full=t.lines.map(x=>x.sk).join(" ");
   let html=`<div class="textcard"><div class="deckmeta" style="position:static;text-align:left;margin-bottom:6px">текст ${textIndex+1} з ${list.length}</div>
     <h3>${t.title}</h3><div class="sub">${t.sub}</div>
-    <button class="speak" id="t-full" style="margin:0 0 14px">🔊 Прослухати весь діалог</button>
+    <button class="speak" id="t-full" style="margin:0 0 14px">🔊 Прослухати ${t.kind==='dialog'?'діалог':'текст'}</button>
     <div class="dlg">`;
   t.lines.forEach((x,idx)=>{html+=`<div class="line">
     <div class="sp">${x.s}</div>
@@ -2124,7 +2125,7 @@ function openPhraseEditor(id){
   editingId=(id==null?null:id);
   const p=editingId!=null?myStore.phrases.find(x=>x.id==editingId):null;
   document.getElementById('pmTitle').textContent=p?"Редагувати фразу":"Нова фраза";
-  const skF=document.getElementById('pm-sk'); if(skF)skF.lang=tgtLang();   // клавіатура під цільову мову
+  const skF=document.getElementById('pm-sk'); if(skF){skF.lang=tgtLang(); skF.placeholder="напр. "+((typeof DATA!=='undefined'&&DATA.words&&DATA.words[0]&&DATA.words[0].sk)||"Dobrý deň");}   // клавіатура й приклад під цільову мову
   const skL=document.getElementById('pm-sk-label'); if(skL&&typeof TARGET_NAME!=='undefined'&&TARGET_NAME)skL.textContent=TARGET_NAME;
   document.getElementById('pm-sk').value=p?p.sk:"";
   document.getElementById('pm-ua').value=p?p.ua:"";
@@ -2136,7 +2137,7 @@ function savePhrase(){
   const sk=document.getElementById('pm-sk').value.trim();
   const ua=document.getElementById('pm-ua').value.trim();
   const note=document.getElementById('pm-note').value.trim();
-  if(!sk||!ua){toast("Заповни поля «словацькою» і «українською»");return;}
+  if(!sk||!ua){toast("Заповни обидва поля: цільовою мовою і перекладом");return;}
   let added=editingId==null;
   if(editingId!=null){
     const p=myStore.phrases.find(x=>x.id==editingId);
@@ -2348,6 +2349,21 @@ document.getElementById('import').onclick=()=>{
     window.addEventListener('pagehide',push);
     window.__cloudPush=push;
   }).catch(function(){btn.textContent='☁ (нема мережі)';});
+})();
+// 💬 Збір відгуків: кнопка → Google-форма (якщо задано FEEDBACK_URL), інакше готовий лист із контекстом
+const FEEDBACK_URL="";  // ← ВСТАВИТИ лінк Google-форми; поки порожньо — кнопка відкриває лист
+const FEEDBACK_EMAIL="wizartclub@gmail.com";
+(function(){
+  var fb=document.getElementById('feedback'); if(!fb)return;
+  fb.addEventListener('click',function(){
+    var lvl=(typeof LEVEL_LABEL!=='undefined'&&LEVEL_LABEL)?LEVEL_LABEL:(typeof levelCode==='function'?levelCode():'');
+    var tgt=(typeof TARGET_NAME!=='undefined'&&TARGET_NAME)?TARGET_NAME:'Словацька';
+    var ctx=tgt+' · рівень '+lvl;
+    if(FEEDBACK_URL){ try{window.open(FEEDBACK_URL,'_blank','noopener');}catch(e){location.href=FEEDBACK_URL;} return; }
+    var subj=encodeURIComponent('Відгук — '+ctx);
+    var body=encodeURIComponent('Що сталося або що покращити:\n\n\n\n— — —\nКурс: '+ctx+'\nСторінка: '+location.href+'\nПристрій: '+(navigator.userAgent||''));
+    location.href='mailto:'+FEEDBACK_EMAIL+'?subject='+subj+'&body='+body;
+  });
 })();
 // ❓ Довідка користувача
 (function(){
